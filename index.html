@@ -33,6 +33,83 @@
                 </div>
             </div>
         </div>
+        <!-- Edit Video Modal -->
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-center p-6 border-b">
+      <h3 class="text-xl font-semibold text-gray-800">Edit Video</h3>
+      <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+
+    <div class="p-6">
+      <form id="editForm" class="space-y-6">
+        <input type="hidden" id="editVideoId" />
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Video Title</label>
+          <input type="text" id="editTitle" class="w-full px-4 py-3 border border-gray-300 rounded-lg" required />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Product Type</label>
+          <select id="editProductType" class="w-full px-4 py-3 border border-gray-300 rounded-lg" required>
+            <option value="">Select Product</option>
+            <option value="Seat Covers">Seat Covers</option>
+            <option value="Floor Mats / Carpets">Floor Mats / Carpets</option>
+            <option value="LED Headlights">LED Headlights</option>
+            <option value="Fog Lights">Fog Lights</option>
+            <option value="Tail Lights / Brake Lights">Tail Lights / Brake Lights</option>
+            <option value="Alloy Wheels">Alloy Wheels</option>
+            <option value="Wheel Covers">Wheel Covers</option>
+            <option value="Car Stereo / Audio System">Car Stereo / Audio System</option>
+            <option value="Amplifier / Subwoofer">Amplifier / Subwoofer</option>
+            <option value="Car Speakers">Car Speakers</option>
+            <option value="Dash Cam / CCTV">Dash Cam / CCTV</option>
+            <option value="Rear View Camera">Rear View Camera</option>
+            <option value="Parking Sensors">Parking Sensors</option>
+            <option value="GPS / Navigation System">GPS / Navigation System</option>
+            <option value="Car Battery">Car Battery</option>
+            <option value="Car Charger / USB Adapter">Car Charger / USB Adapter</option>
+            <option value="Air Freshener">Air Freshener</option>
+            <option value="Steering Wheel Cover">Steering Wheel Cover</option>
+            <option value="Car Cover">Car Cover</option>
+            <option value="Sun Shades / Window Tint">Sun Shades / Window Tint</option>
+            <option value="Roof Box / Luggage Carrier">Roof Box / Luggage Carrier</option>
+            <option value="Tow Hooks / Tow Bar">Tow Hooks / Tow Bar</option>
+            <option value="Spoilers / Body Kits">Spoilers / Body Kits</option>
+            <option value="Bumper Guards / Fender Protectors">Bumper Guards / Fender Protectors</option>
+            <option value="Side Steps / Running Boards">Side Steps / Running Boards</option>
+            <option value="Car Polishing / Wax Kit">Car Polishing / Wax Kit</option>
+            <option value="Car Wash Accessories">Car Wash Accessories</option>
+            <option value="Ambient / Interior LED Lighting">Ambient / Interior LED Lighting</option>
+            <option value="Dashboard Trim / Panel Kits">Dashboard Trim / Panel Kits</option>
+            <option value="Gear Knob / Handbrake Covers">Gear Knob / Handbrake Covers</option>
+            <option value="Seat Cushion / Lumbar Support">Seat Cushion / Lumbar Support</option>
+            <option value="Headrest Monitors">Headrest Monitors</option>
+            <option value="Tyre Inflator / Air Pump">Tyre Inflator / Air Pump</option>
+            <option value="Jump Starter / Booster">Jump Starter / Booster</option>
+            <option value="Car Tool Kit">Car Tool Kit</option>
+            <option value="Windshield Wipers / Blades">Windshield Wipers / Blades</option>
+            <option value="Car Horn / Air Horn">Car Horn / Air Horn</option>
+            <option value="Child Seat">Child Seat</option>
+          </select>
+        </div>
+
+        <div class="flex space-x-4 pt-4">
+          <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center">
+            <i class="fas fa-save mr-2"></i> Save Changes
+          </button>
+          <button type="button" id="cancelEdit" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
     </header>
 
     <!-- Main Content -->
@@ -319,5 +396,6 @@
         </div>
     </footer>
 </body>
+
 
 </html>
