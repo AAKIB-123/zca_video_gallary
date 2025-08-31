@@ -344,11 +344,10 @@ if (uploadModal) uploadModal.addEventListener('click', e => {
 updateTotalVideosCount();
 
 
-//edit option for each vedio
-
+// Example function to render videos with Delete button
 function renderVideos(videos) {
   const videoGrid = document.getElementById('videoGrid');
-  videoGrid.innerHTML = ''; // Clear previous videos
+  videoGrid.innerHTML = ''; // Clear existing videos
 
   videos.forEach(video => {
     const videoCard = document.createElement('div');
@@ -367,7 +366,7 @@ function renderVideos(videos) {
     videoGrid.appendChild(videoCard);
   });
 
-  // Add event listeners for all delete buttons
+  // Add event listeners to all delete buttons
   document.querySelectorAll('.delete-btn').forEach(button => {
     button.addEventListener('click', async (e) => {
       const videoId = e.target.getAttribute('data-id');
@@ -379,7 +378,7 @@ function renderVideos(videos) {
           if (res.ok) {
             alert('Video deleted successfully');
             // Refresh videos after deletion
-            searchVideos(); // or your function to fetch and render videos
+            searchVideos(); // Your function to fetch and render videos
           } else {
             alert('Failed to delete video');
           }
@@ -391,5 +390,6 @@ function renderVideos(videos) {
     });
   });
 }
+
 
 
