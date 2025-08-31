@@ -344,52 +344,89 @@ if (uploadModal) uploadModal.addEventListener('click', e => {
 updateTotalVideosCount();
 
 
-// Example function to render videos with Delete button
-function renderVideos(videos) {
-  const videoGrid = document.getElementById('videoGrid');
-  videoGrid.innerHTML = ''; // Clear existing videos
+let videos = []; // Will hold fetched videos
 
-  videos.forEach(video => {
-    const videoCard = document.createElement('div');
-    videoCard.className = 'bg-white rounded-lg shadow p-4 flex flex-col';
+const editModal = document.getElementById('editModal');
+const closeEditModalBtn = document.getElementById('closeEditModal');
+const cancelEditBtn = document.getElementById('cancelEdit');
+const editForm = document.getElementById('editForm');
+const editVideoIdInput = document.getElementById('editVideoId');
+const editTitleInput = document.getElementById('editTitle');
+const editProductTypeSelect = document.getElementById('editProductType');
 
-    videoCard.innerHTML = `
-      <video src="${video.videoUrl}" controls class="rounded-lg mb-4"></video>
-      <h3 class="font-semibold text-lg mb-2">${video.title}</h3>
-      <p class="text-gray-600 mb-2">${video.carMake} - ${video.carModel}</p>
-      <p class="text-gray-600 mb-4">${video.productType}</p>
-      <button class="delete-btn bg-red-600 hover:bg-red-700 text-white py-2 rounded" data-id="${video._id}">
-        Delete
-      </button>
-    `;
-
-    videoGrid.appendChild(videoCard);
-  });
-
-  // Add event listeners to all delete buttons
-  document.querySelectorAll('.delete-btn').forEach(button => {
-    button.addEventListener('click', async (e) => {
-      const videoId = e.target.getAttribute('data-id');
-      if (confirm('Are you sure you want to delete this video?')) {
-        try {
-          const res = await fetch(`http://localhost:5000/api/videos/${videoId}`, {
-            method: 'DELETE',
-          });
-          if (res.ok) {
-            alert('Video deleted successfully');
-            // Refresh videos after deletion
-            searchVideos(); // Your function to fetch and render videos
-          } else {
-            alert('Failed to delete video');
-          }
-        } catch (error) {
-          console.error('Error deleting video:', error);
-          alert('Error deleting video');
-        }
-      }
-    });
-  });
+function openEditModal(videoId) {
+  const video = videos.find(v => v._id === videoId);
+  if (!video) {
+    alert('Video not found');
+    return;
+  }
+  editVideoIdInput.value = video._id;
+  editTitleInput.value = video.title || '';
+  editProductTypeSelect.value = video.productType || '';
+  editModal.classList.remove('hidden');
 }
+
+function closeEditModal() {
+  editModal.classList.add('hidden');
+}
+
+cancelEditBtn.addEventListener('click', closeEditModal);
+closeEditModalBtn.addEventListener('click', closeEditModal);
+
+editForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = editVideoIdInput.value;
+  const updatedData = {
+    title: editTitleInput.value,
+    productType: editProductTypeSelect.value,
+  };
+  try {
+    const res = await fetch(`http://localhost:5000/api/videos/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedData),
+    });
+    if (res.ok) {
+      alert('Video updated successfully');
+      closeEditModal();
+      fetchAndDisplayVideos();
+    } else {
+      alert('Failed to update video');
+    }
+  } catch (err) {
+    console.error('Error updating video:', err);
+    alert('Error updating video');
+  }
+});
+
+async function fetchAndDisplayVideos() {
+  try {
+    const res = await fetch('http://localhost:5000/api/videos');
+    const data = await res.json();
+    videos = data.videos;
+    const videoGrid = document.getElementById('videoGrid');
+    videoGrid.innerHTML = '';
+    videos.forEach(video => {
+      const div = document.createElement('div');
+      div.className = 'bg-white rounded-lg shadow p-4 flex flex-col';
+      div.innerHTML = `
+        <h3 class="font-semibold text-lg mb-2">${video.title}</h3>
+        <p class="text-gray-600 mb-4">Product: ${video.productType || 'N/A'}</p>
+        <button onclick="openEditModal('${video._id}')" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded self-start">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+      `;
+      videoGrid.appendChild(div);
+    });
+    document.getElementById('resultsSection').classList.remove('hidden');
+  } catch (err) {
+    console.error('Error fetching videos:', err);
+  }
+}
+
+// Call on page load
+fetchAndDisplayVideos();
+
 
 
 
