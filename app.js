@@ -342,3 +342,54 @@ if (uploadModal) uploadModal.addEventListener('click', e => {
 
 // Init
 updateTotalVideosCount();
+
+
+//edit option for each vedio
+
+function renderVideos(videos) {
+  const videoGrid = document.getElementById('videoGrid');
+  videoGrid.innerHTML = ''; // Clear previous videos
+
+  videos.forEach(video => {
+    const videoCard = document.createElement('div');
+    videoCard.className = 'bg-white rounded-lg shadow p-4 flex flex-col';
+
+    videoCard.innerHTML = `
+      <video src="${video.videoUrl}" controls class="rounded-lg mb-4"></video>
+      <h3 class="font-semibold text-lg mb-2">${video.title}</h3>
+      <p class="text-gray-600 mb-2">${video.carMake} - ${video.carModel}</p>
+      <p class="text-gray-600 mb-4">${video.productType}</p>
+      <button class="delete-btn bg-red-600 hover:bg-red-700 text-white py-2 rounded" data-id="${video._id}">
+        Delete
+      </button>
+    `;
+
+    videoGrid.appendChild(videoCard);
+  });
+
+  // Add event listeners for all delete buttons
+  document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', async (e) => {
+      const videoId = e.target.getAttribute('data-id');
+      if (confirm('Are you sure you want to delete this video?')) {
+        try {
+          const res = await fetch(`http://localhost:5000/api/videos/${videoId}`, {
+            method: 'DELETE',
+          });
+          if (res.ok) {
+            alert('Video deleted successfully');
+            // Refresh videos after deletion
+            searchVideos(); // or your function to fetch and render videos
+          } else {
+            alert('Failed to delete video');
+          }
+        } catch (error) {
+          console.error('Error deleting video:', error);
+          alert('Error deleting video');
+        }
+      }
+    });
+  });
+}
+
+
